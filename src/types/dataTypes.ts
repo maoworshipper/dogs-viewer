@@ -40,6 +40,9 @@ export interface IPokemonDetail {
   abilities: IAbility[];
   weight: number;
   types: IType[];
+  sprites: {
+    front_default: string | null;
+  };
 }
 
 export interface IAbilityEffectEntry {
