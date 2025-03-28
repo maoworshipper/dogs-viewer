@@ -1,4 +1,3 @@
-import { getFormattedData } from "../utils/common";
 import {
   IDataResponse,
   IPokemonDetail,
@@ -27,11 +26,9 @@ async function fetchData<T>(url: string): Promise<T> {
 export const fetchAllItems = async (
   limit: number = 1400
 ): Promise<IDataResponse> => {
-  const data = await fetchData<IDataResponse>(
+  return await fetchData<IDataResponse>(
     `${BASE_URL}/pokemon?limit=${limit}&offset=0`
   );
-
-  return getFormattedData(data);
 };
 
 export const fetchItemDetails = async (
