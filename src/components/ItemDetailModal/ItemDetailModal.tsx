@@ -1,5 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { usePokemonDetails } from "../../hooks/usePokemonDetails";
+import { useAbilityDetails } from "../../hooks/useAbilityDetails";
+import AbilityDetail from "../AbilityDetail/AbilityDetail";
 import "./ItemDetailModal.css";
 
 interface ItemDetailModalProps {
@@ -18,6 +20,17 @@ const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
     error: detailsError,
   } = usePokemonDetails(pokemonUrl);
 
+  const [selectedAbilityUrl, setSelectedAbilityUrl] = useState<string | null>(
+    null
+  );
+
+  const {
+    data: abilityDetails,
+    isLoading: isLoadingAbility,
+    isError: isAbilityError,
+    error: abilityError,
+  } = useAbilityDetails(selectedAbilityUrl);
+
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -27,6 +40,14 @@ const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
     window.addEventListener("keydown", handleEsc);
     return () => window.removeEventListener("keydown", handleEsc);
   }, [onClose]);
+
+  useEffect(() => {
+    setSelectedAbilityUrl(null);
+  }, [pokemonUrl]);
+
+  const handleAbilityClick = (url: string) => {
+    setSelectedAbilityUrl(selectedAbilityUrl === url ? null : url);
+  };
 
   const handleModalContentClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -100,9 +121,39 @@ const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
                   <strong>Habilidades:</strong>
                   <ul className="abilities-list">
                     {pokemonDetails.abilities.map((a) => (
-                      <li key={a.ability.name}></li>
+                      <li key={a.ability.name}>
+                        <button
+                          className={`ability-button ${
+                            selectedAbilityUrl === a.ability.url ? "active" : ""
+                          }`}
+                          onClick={() => handleAbilityClick(a.ability.url)}
+                          disabled={
+                            isLoadingAbility &&
+                            selectedAbilityUrl === a.ability.url
+                          }
+                        >
+                          {a.ability.name}
+                          {isLoadingAbility &&
+                            selectedAbilityUrl === a.ability.url && (
+                              <span className="button-spinner"></span>
+                            )}
+                        </button>
+                      </li>
                     ))}
                   </ul>
+                </div>
+
+                {/* Display ability details */}
+                <div className="ability-detail-wrapper">
+                  <AbilityDetail
+                    details={abilityDetails ?? null}
+                    isLoading={isLoadingAbility}
+                    error={
+                      isAbilityError
+                        ? abilityError?.message || "Error al cargar habilidad"
+                        : null
+                    }
+                  />
                 </div>
               </div>
             </div>
