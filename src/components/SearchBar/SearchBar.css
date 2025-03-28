@@ -1,0 +1,39 @@
+.search-bar-container {
+  margin-bottom: var(--spacing-6);
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.search-input {
+  padding: var(--spacing-3) var(--spacing-4);
+  width: 100%;
+  max-width: 500px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  color: var(--color-text-primary);
+}
+
+.search-input::placeholder {
+  color: var(--color-text-secondary);
+  opacity: 0.8;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+/* Style for clear button on type="search" */
+.search-input::-webkit-search-cancel-button {
+  -webkit-appearance: none; /* Override default */
+  appearance: none;
+  height: 1rem;
+  width: 1rem;
+  margin-left: 0.5rem;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%239CA3AF'><path fill-rule='evenodd' d='M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z' clip-rule='evenodd' /></svg>");
+  cursor: pointer;
+}
