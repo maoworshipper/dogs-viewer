@@ -7,6 +7,8 @@ interface ItemTableRowProps {
   pokemonInfo: IPokemon;
 }
 
+const isTouchDevice = navigator.maxTouchPoints > 0;
+
 const ItemTableRow: React.FC<ItemTableRowProps> = ({ pokemonInfo }) => {
   const { openPokemonModal } = useAppContext();
 
@@ -16,12 +18,21 @@ const ItemTableRow: React.FC<ItemTableRowProps> = ({ pokemonInfo }) => {
     isError,
   } = usePokemonSprite(pokemonInfo.url);
 
+  const handleClick = () => {
+    if (isTouchDevice) {
+      console.log(`Tap detected on touch device for: ${pokemonInfo.name}`);
+      openPokemonModal(pokemonInfo.url);
+    }
+  };
+
   const handleDoubleClick = () => {
     openPokemonModal(pokemonInfo.url);
   };
 
   return (
-    <tr className="pokemon-table-row">
+    <tr
+      className="pokemon-table-row"
+    >
       <td data-label="Nombre">{pokemonInfo.name}</td>
       <td data-label="Imagen">
         <div className="image-container">
@@ -32,9 +43,14 @@ const ItemTableRow: React.FC<ItemTableRowProps> = ({ pokemonInfo }) => {
               src={imageUrl}
               alt={`Imagen de ${pokemonInfo.name}`}
               className="pokemon-image"
+              onClick={handleClick}
               onDoubleClick={handleDoubleClick}
               loading="lazy"
+              style={{ touchAction: "manipulation" }}
             />
+          )}
+          {!isLoading && !isError && !imageUrl && (
+            <div className="image-placeholder">?</div>
           )}
         </div>
       </td>
