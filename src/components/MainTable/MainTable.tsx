@@ -13,6 +13,14 @@ const MainTable: React.FC<MainTableProps> = ({ pokemonList, isLoading }) => {
     return <div className="loading-message">Cargando Pokémones...</div>;
   }
 
+  if (!pokemonList.length) {
+    return (
+      <div className="no-results-message">
+        No se encontraron Pokémones con ese nombre.
+      </div>
+    );
+  }
+
   return (
     <div className="table-container">
       <table className="pokemon-table">
