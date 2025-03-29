@@ -1,4 +1,4 @@
-import { useMemo, useEffect } from "react";
+import React, { useMemo, useEffect } from "react";
 import SearchBar from "./components/SearchBar/SearchBar";
 import MainTable from "./components/MainTable/MainTable";
 import Pagination from "./components/Pagination/Pagination";
