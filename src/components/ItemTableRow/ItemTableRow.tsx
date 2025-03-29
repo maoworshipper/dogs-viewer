@@ -20,7 +20,6 @@ const ItemTableRow: React.FC<ItemTableRowProps> = ({ pokemonInfo }) => {
 
   const handleClick = () => {
     if (isTouchDevice) {
-      console.log(`Tap detected on touch device for: ${pokemonInfo.name}`);
       openPokemonModal(pokemonInfo.url);
     }
   };
@@ -32,6 +31,7 @@ const ItemTableRow: React.FC<ItemTableRowProps> = ({ pokemonInfo }) => {
   return (
     <tr
       className="pokemon-table-row"
+      data-testid={`pokemon-row-${pokemonInfo.name}`}
     >
       <td data-label="Nombre">{pokemonInfo.name}</td>
       <td data-label="Imagen">
