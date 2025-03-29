@@ -1,35 +1,90 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useMemo, useEffect } from "react";
+import SearchBar from "./components/SearchBar/SearchBar";
+import MainTable from "./components/MainTable/MainTable";
+import Pagination from "./components/Pagination/Pagination";
+import ItemDetailModal from "./components/ItemDetailModal/ItemDetailModal";
+import { useAppContext, usePokemonList, usePagination } from "./hooks/index";
+import { IPokemon } from "./types/dataTypes";
+import "./App.css";
+
+const ITEMS_PER_PAGE = 10;
 
 function App() {
-  const [count, setCount] = useState(0)
+  const {
+    searchTerm,
+    currentPage,
+    selectedPokemonUrl,
+    closePokemonModal,
+    resetToFirstPage,
+  } = useAppContext();
+
+  const {
+    data: allPokemon = [],
+    isLoading: isLoadingList,
+    isError: isListError,
+    error: listError,
+  } = usePokemonList();
+
+  const filteredPokemon = useMemo(() => {
+    if (!searchTerm) {
+      return allPokemon;
+    }
+    return allPokemon.filter((pokemon: IPokemon) =>
+      pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [allPokemon, searchTerm]);
+
+  const { paginatedData: displayPokemon, totalPages } = usePagination({
+    data: filteredPokemon,
+    currentPage,
+    itemsPerPage: ITEMS_PER_PAGE,
+  });
+
+  useEffect(() => {
+    if (currentPage > totalPages && totalPages > 0) {
+      resetToFirstPage();
+    }
+  }, [
+    currentPage,
+    totalPages,
+    resetToFirstPage,
+    filteredPokemon.length,
+    allPokemon.length,
+  ]);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="app-container">
+      <header className="app-header">
+        <h1>PK Viewer</h1>
+      </header>
+
+      <main>
+        <SearchBar />
+
+        {isListError && (
+          <p className="error-message">
+            Error cargando la lista: {listError?.message || "Error desconocido"}
+          </p>
+        )}
+
+        <MainTable
+          pokemonList={displayPokemon}
+          isLoading={isLoadingList && !allPokemon.length}
+        />
+
+        {!isLoadingList && filteredPokemon.length > 0 && totalPages > 1 && (
+          <Pagination totalPages={totalPages} />
+        )}
+      </main>
+
+      {selectedPokemonUrl && (
+        <ItemDetailModal
+          pokemonUrl={selectedPokemonUrl}
+          onClose={closePokemonModal}
+        />
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;

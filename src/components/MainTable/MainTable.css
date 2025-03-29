@@ -1,0 +1,105 @@
+.table-container {
+  overflow-x: auto;
+  margin-bottom: var(--spacing-6);
+}
+
+.pokemon-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.pokemon-table th,
+.pokemon-table td {
+  padding: var(--spacing-4) var(--spacing-5);
+  vertical-align: middle;
+  text-align: center;
+  border-bottom: 1px dashed var(--color-border);
+}
+
+.pokemon-table thead {
+  background-color: var(--color-background);
+}
+
+.pokemon-table th {
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid var(--color-border);
+}
+
+.pokemon-table tbody tr {
+  transition: background-color 0.15s ease-in-out;
+}
+
+.pokemon-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.pokemon-table tbody tr:hover {
+  background-color: var(--color-background);
+}
+
+.loading-message,
+.no-results-message {
+  text-align: center;
+  padding: var(--spacing-8) var(--spacing-4);
+  font-size: 1.1rem;
+  color: var(--color-text-secondary);
+  min-height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media screen and (max-width: 650px) {
+  .pokemon-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  .pokemon-table tr {
+    display: block;
+    margin-bottom: var(--spacing-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    background-color: var(--color-card-background);
+  }
+  .pokemon-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-3) var(--spacing-4);
+    text-align: right;
+    border-bottom: 1px dashed var(--color-border);
+    font-size: 0.95rem;
+  }
+  .pokemon-table tr td:last-child {
+    border-bottom: none;
+  }
+  .pokemon-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    text-align: left;
+    margin-right: var(--spacing-4);
+    text-transform: capitalize;
+  }
+  
+  .pokemon-table td[data-label="Imagen"] .image-container {
+    margin-left: auto;
+    margin-right: 0;
+  }
+}
