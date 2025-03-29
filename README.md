@@ -1,54 +1,102 @@
-# React + TypeScript + Vite
+# PK Viewer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+PK Viewer es una aplicación web para explorar y buscar personajes de Pokémon. Está construida con React, TypeScript y Vite, esta aplicación obtiene datos de [PokéAPI](https://pokeapi.co/) para proporcionar una experiencia interactiva para los fanáticos de Pokémon.
 
-Currently, two official plugins are available:
+## Características
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Explorar Pokémones**: Ver una lista completa de Pokémones con su información básica
+- **Funcionalidad de búsqueda**: Encuentra rápidamente Pokémones específicos por nombre
+- **Paginación**: Navega fácilmente por la gran colección de Pokémones
+- **Vista detallada**: Haz clic en cualquier Pokémon para ver su información detallada, incluyendo:
+  - Tipo
+  - Peso
+  - Habilidades con descripciones detalladas
+- **Diseño responsivo**: Optimizado para dispositivos de escritorio y móviles
+- **Alto rendimiento**: Construido con React Query para una obtención y almacenamiento en caché de datos eficiente
 
-## Expanding the ESLint configuration
+## Tecnologías
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **React**: Biblioteca de interfaz de usuario
+- **TypeScript**: Para seguridad de tipos
+- **Vite**: Herramienta de construcción rápida
+- **React Query**: Gestión de obtención de datos y caché
+- **CSS**: Estilos personalizados
+- **Jest & React Testing Library**: Para pruebas completas
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Comenzando
+
+### Requisitos previos
+
+- Node.js (v14 o superior)
+- npm o yarn
+
+### Instalación
+
+1. Clona el repositorio:
+   ```bash
+   git clone https://github.com/maoworshipper/pk-viewer.git
+   cd pk-viewer
+   ```
+
+2. Instala las dependencias:
+   ```bash
+   npm install
+   # o
+   yarn
+   ```
+
+3. Inicia el servidor de desarrollo:
+   ```bash
+   npm run dev
+   # o
+   yarn dev
+   ```
+
+4. Abre tu navegador y navega a `http://localhost:5173`
+
+## Despliegue a producción
+
+La aplicación se encuentra desplegada en [Vercel](https://pk-viewer.vercel.app/).
+
+## Ejecutando pruebas
+
+```bash
+# Ejecutar todas las pruebas
+npm test
+# o
+yarn test
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Estructura del proyecto
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
 ```
+pk-viewer/
+├── src/
+│   ├── components/          # Componentes de interfaz de usuario
+│   │   ├── AbilityDetail/   # Muestra información de habilidades de Pokémon
+│   │   ├── ItemDetailModal/ # Modal para mostrar información detallada de Pokémon
+│   │   ├── ItemTableRow/    # Fila individual de Pokémon en la tabla principal
+│   │   ├── MainTable/       # Componente de tabla principal para listar Pokémones
+│   │   ├── Pagination/      # Controles de paginación
+│   │   └── SearchBar/       # Funcionalidad de búsqueda
+│   ├── context/             # Contexto de React para estado global
+│   ├── hooks/               # Hooks personalizados de React
+│   ├── services/            # Funciones de servicio de API
+│   ├── types/               # Definiciones de tipos de TypeScript
+│   ├── App.tsx              # Componente principal de la aplicación
+│   └── main.tsx             # Punto de entrada de la aplicación
+└── ...                      # Archivos de configuración
+```
+
+## Hooks personalizados
+
+- `useAppContext`: Proporciona acceso al contexto de la aplicación
+- `usePokemonList`: Obtiene la lista de todos los Pokémones
+- `usePokemonDetails`: Obtiene información detallada de un Pokémon específico
+- `useAbilityDetails`: Obtiene información detallada sobre una habilidad de Pokémon
+- `usePokemonSprite`: Obtiene el sprite (imagen) de un Pokémon
+- `usePagination`: Maneja la lógica de paginación
+
+## Licencia
+
+Este proyecto está licenciado bajo la Licencia MIT - consulta el archivo LICENSE para más detalles.
