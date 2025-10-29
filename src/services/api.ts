@@ -1,10 +1,12 @@
 import {
   IDataResponse,
-  IPokemonDetail,
-  IAbilityDetails,
+  IDogImages,
+  IBreedInfo,
+  IDogBreed,
 } from "../types/dataTypes";
 
-const BASE_URL = "https://pokeapi.co/api/v2";
+const DOG_API_BASE_URL = "https://dog.ceo/api";
+const DOG_BREEDS_API_BASE_URL = "https://api.thedogapi.com/v1";
 
 async function fetchData<T>(url: string): Promise<T> {
   try {
@@ -23,22 +25,50 @@ async function fetchData<T>(url: string): Promise<T> {
   }
 }
 
-export const fetchAllItems = async (
-  limit: number = 1400
-): Promise<IDataResponse> => {
-  return await fetchData<IDataResponse>(
-    `${BASE_URL}/pokemon?limit=${limit}&offset=0`
+export const fetchAllItems = async (): Promise<IDogBreed[]> => {
+  const response = await fetchData<IDataResponse>(
+    `${DOG_API_BASE_URL}/breeds/list/all`
   );
+  
+  const breeds: IDogBreed[] = [];
+  for (const [breed, subBreeds] of Object.entries(response.message)) {
+    breeds.push({
+      name: breed,
+      subBreeds: subBreeds || [],
+    });
+  }
+  
+  return breeds;
 };
 
-export const fetchItemDetails = async (
-  url: string
-): Promise<IPokemonDetail> => {
-  return fetchData<IPokemonDetail>(url);
+export const fetchDogImages = async (
+  breed: string,
+  subBreed?: string
+): Promise<IDogImages> => {
+  const url = subBreed 
+    ? `${DOG_API_BASE_URL}/breed/${breed}/${subBreed}/images`
+    : `${DOG_API_BASE_URL}/breed/${breed}/images`;
+  
+  return fetchData<IDogImages>(url);
 };
 
-export const fetchAbilityDetails = async (
-  url: string
-): Promise<IAbilityDetails> => {
-  return fetchData<IAbilityDetails>(url);
+export const fetchBreedInfo = async (
+  breedName: string
+): Promise<IBreedInfo[]> => {
+  try {
+    return await fetchData<IBreedInfo[]>(
+      `${DOG_BREEDS_API_BASE_URL}/breeds/search?q=${breedName}`
+    );
+  } catch {
+    // Fallback with mock data if the API fails
+    console.warn(`Failed to fetch breed info for ${breedName}, using fallback data`);
+    return [{
+      weight: { imperial: "20-40 lbs", metric: "9-18 kg" },
+      height: { imperial: "12-16 inches", metric: "30-41 cm" },
+      life_span: "10-14 years",
+      temperament: "Friendly, Loyal, Energetic",
+      origin: "Unknown",
+      bred_for: "Companionship"
+    }];
+  }
 };
