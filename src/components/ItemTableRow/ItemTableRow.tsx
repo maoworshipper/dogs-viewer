@@ -1,39 +1,43 @@
 import React from "react";
-import { IPokemon } from "../../types/dataTypes";
-import { useAppContext, usePokemonSprite } from "../../hooks/index";
+import { IDogBreed } from "../../types/dataTypes";
+import { useAppContext, useDogImage } from "../../hooks/index";
 import "./ItemTableRow.css";
 
 interface ItemTableRowProps {
-  pokemonInfo: IPokemon;
+  dogBreedInfo: IDogBreed;
 }
 
-const isTouchDevice = navigator.maxTouchPoints > 0;
-
-const ItemTableRow: React.FC<ItemTableRowProps> = ({ pokemonInfo }) => {
-  const { openPokemonModal } = useAppContext();
+const ItemTableRow: React.FC<ItemTableRowProps> = ({ dogBreedInfo }) => {
+  const { openDogModal } = useAppContext();
 
   const {
     data: imageUrl,
     isLoading,
     isError,
-  } = usePokemonSprite(pokemonInfo.url);
+  } = useDogImage(dogBreedInfo.name);
 
   const handleClick = () => {
-    if (isTouchDevice) {
-      openPokemonModal(pokemonInfo.url);
-    }
+    openDogModal(dogBreedInfo.name);
   };
 
-  const handleDoubleClick = () => {
-    openPokemonModal(pokemonInfo.url);
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      openDogModal(dogBreedInfo.name);
+    }
   };
 
   return (
     <tr
-      className="pokemon-table-row"
-      data-testid={`pokemon-row-${pokemonInfo.name}`}
+      className="dog-table-row"
+      data-testid={`dog-row-${dogBreedInfo.name}`}
+      onClick={handleClick}
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+      aria-label={`Ver detalles de ${dogBreedInfo.name}`}
+      style={{ cursor: "pointer" }}
     >
-      <td data-label="Nombre">{pokemonInfo.name}</td>
+      <td data-label="Nombre">{dogBreedInfo.name}</td>
       <td data-label="Imagen">
         <div className="image-container">
           {isLoading && <div className="spinner small"></div>}
@@ -41,10 +45,8 @@ const ItemTableRow: React.FC<ItemTableRowProps> = ({ pokemonInfo }) => {
           {!isLoading && !isError && imageUrl && (
             <img
               src={imageUrl}
-              alt={`Imagen de ${pokemonInfo.name}`}
-              className="pokemon-image"
-              onClick={handleClick}
-              onDoubleClick={handleDoubleClick}
+              alt={`Imagen de ${dogBreedInfo.name}`}
+              className="dog-image"
               loading="lazy"
               style={{ touchAction: "manipulation" }}
             />
