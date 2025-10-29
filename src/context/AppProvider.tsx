@@ -8,7 +8,7 @@ interface AppProviderProps {
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedPokemonUrl, setSelectedPokemonUrl] = useState<string | null>(
+  const [selectedDogBreed, setSelectedDogBreed] = useState<string | null>(
     null
   );
 
@@ -16,24 +16,24 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     setCurrentPage(1);
   }, []);
 
-  const openPokemonModal = useCallback((url: string) => {
-    setSelectedPokemonUrl(url);
+  const openDogModal = useCallback((breed: string) => {
+    setSelectedDogBreed(breed);
   }, []);
 
-  const closePokemonModal = useCallback(() => {
-    setSelectedPokemonUrl(null);
+  const closeDogModal = useCallback(() => {
+    setSelectedDogBreed(null);
   }, []);
 
   const value = {
     searchTerm,
     currentPage,
-    selectedPokemonUrl,
+    selectedDogBreed,
     setSearchTerm,
     setCurrentPage,
-    setSelectedPokemonUrl,
+    setSelectedDogBreed,
     resetToFirstPage,
-    openPokemonModal,
-    closePokemonModal,
+    openDogModal,
+    closeDogModal,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
