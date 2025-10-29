@@ -1,41 +1,41 @@
 import React, { useMemo, useEffect } from "react";
 import SearchBar from "./components/SearchBar/SearchBar";
-import MainTable from "./components/MainTable/MainTable";
+import DogGrid from "./components/DogGrid/DogGrid";
 import Pagination from "./components/Pagination/Pagination";
 import ItemDetailModal from "./components/ItemDetailModal/ItemDetailModal";
-import { useAppContext, usePokemonList, usePagination } from "./hooks/index";
-import { IPokemon } from "./types/dataTypes";
+import { useAppContext, useDogBreedList, usePagination } from "./hooks/index";
+import { IDogBreed } from "./types/dataTypes";
 import "./App.css";
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 12;
 
 function App() {
   const {
     searchTerm,
     currentPage,
-    selectedPokemonUrl,
-    closePokemonModal,
+    selectedDogBreed,
+    closeDogModal,
     resetToFirstPage,
   } = useAppContext();
 
   const {
-    data: allPokemon = [],
+    data: allDogBreeds = [],
     isLoading: isLoadingList,
     isError: isListError,
     error: listError,
-  } = usePokemonList();
+  } = useDogBreedList();
 
-  const filteredPokemon = useMemo(() => {
+  const filteredDogBreeds = useMemo(() => {
     if (!searchTerm) {
-      return allPokemon;
+      return allDogBreeds;
     }
-    return allPokemon.filter((pokemon: IPokemon) =>
-      pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
+    return allDogBreeds.filter((dogBreed: IDogBreed) =>
+      dogBreed.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-  }, [allPokemon, searchTerm]);
+  }, [allDogBreeds, searchTerm]);
 
-  const { paginatedData: displayPokemon, totalPages } = usePagination({
-    data: filteredPokemon,
+  const { paginatedData: displayDogBreeds, totalPages } = usePagination({
+    data: filteredDogBreeds,
     currentPage,
     itemsPerPage: ITEMS_PER_PAGE,
   });
@@ -48,14 +48,14 @@ function App() {
     currentPage,
     totalPages,
     resetToFirstPage,
-    filteredPokemon.length,
-    allPokemon.length,
+    filteredDogBreeds.length,
+    allDogBreeds.length,
   ]);
 
   return (
     <div className="app-container">
       <header className="app-header">
-        <h1>PK Viewer</h1>
+        <h1>Dog Breed Viewer</h1>
       </header>
 
       <main>
@@ -67,20 +67,20 @@ function App() {
           </p>
         )}
 
-        <MainTable
-          pokemonList={displayPokemon}
-          isLoading={isLoadingList && !allPokemon.length}
+        <DogGrid
+          dogBreedList={displayDogBreeds}
+          isLoading={isLoadingList && !allDogBreeds.length}
         />
 
-        {!isLoadingList && filteredPokemon.length > 0 && totalPages > 1 && (
+        {!isLoadingList && filteredDogBreeds.length > 0 && totalPages > 1 && (
           <Pagination totalPages={totalPages} />
         )}
       </main>
 
-      {selectedPokemonUrl && (
+      {selectedDogBreed && (
         <ItemDetailModal
-          pokemonUrl={selectedPokemonUrl}
-          onClose={closePokemonModal}
+          dogBreed={selectedDogBreed}
+          onClose={closeDogModal}
         />
       )}
     </div>
