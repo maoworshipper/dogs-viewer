@@ -24,7 +24,7 @@ const Pagination: React.FC<PaginationProps> = ({ totalPages }) => {
   }
 
   return (
-    <nav className="pagination-container" aria-label="Paginación de Pokémon">
+    <nav className="pagination-container" aria-label="Paginación de perros">
       <button
         onClick={handlePrevious}
         disabled={currentPage === 1}

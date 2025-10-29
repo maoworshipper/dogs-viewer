@@ -10,13 +10,13 @@ describe("Pagination Component", () => {
   const mockContextValue: AppContextType = {
     searchTerm: "",
     currentPage: 2,
-    selectedPokemonUrl: null,
+    selectedDogBreed: null,
     setSearchTerm: jest.fn(),
     setCurrentPage: jest.fn(),
-    setSelectedPokemonUrl: jest.fn(),
+    setSelectedDogBreed: jest.fn(),
     resetToFirstPage: jest.fn(),
-    openPokemonModal: jest.fn(),
-    closePokemonModal: jest.fn(),
+    openDogModal: jest.fn(),
+    closeDogModal: jest.fn(),
   };
 
   const renderWithContext = (
@@ -114,7 +114,7 @@ describe("Pagination Component", () => {
 
     expect(screen.getByRole("navigation")).toHaveAttribute(
       "aria-label",
-      "Paginación de Pokémon"
+      "Paginación de perros"
     );
     expect(screen.getByText(/página 2 de 5/i)).toHaveAttribute(
       "aria-live",

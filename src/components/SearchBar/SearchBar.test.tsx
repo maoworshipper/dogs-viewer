@@ -8,13 +8,13 @@ describe("SearchBar Component", () => {
   const mockContextValue: AppContextType = {
     searchTerm: "",
     currentPage: 1,
-    selectedPokemonUrl: null,
+    selectedDogBreed: null,
     setSearchTerm: jest.fn(),
     setCurrentPage: jest.fn(),
-    setSelectedPokemonUrl: jest.fn(),
+    setSelectedDogBreed: jest.fn(),
     resetToFirstPage: jest.fn(),
-    openPokemonModal: jest.fn(),
-    closePokemonModal: jest.fn(),
+    openDogModal: jest.fn(),
+    closeDogModal: jest.fn(),
   };
 
   const renderWithContext = (
@@ -35,7 +35,7 @@ describe("SearchBar Component", () => {
     
     const searchInput = screen.getByRole("searchbox");
     expect(searchInput).toBeInTheDocument();
-    expect(searchInput).toHaveAttribute("placeholder", "Buscar Pokémon...");
+    expect(searchInput).toHaveAttribute("placeholder", "Buscar raza de perro...");
   });
 
   test("should render with custom placeholder when provided", () => {
@@ -49,22 +49,22 @@ describe("SearchBar Component", () => {
   test("should display the current search term from context", () => {
     const customContext = {
       ...mockContextValue,
-      searchTerm: "pikachu",
+      searchTerm: "labrador",
     };
     
     renderWithContext(<SearchBar />, customContext);
     
     const searchInput = screen.getByRole("searchbox") as HTMLInputElement;
-    expect(searchInput.value).toBe("pikachu");
+    expect(searchInput.value).toBe("labrador");
   });
 
   test("should call setSearchTerm and resetToFirstPage when input changes", () => {
     renderWithContext(<SearchBar />);
     
     const searchInput = screen.getByRole("searchbox");
-    fireEvent.change(searchInput, { target: { value: "charizard" } });
+    fireEvent.change(searchInput, { target: { value: "retriever" } });
     
-    expect(mockContextValue.setSearchTerm).toHaveBeenCalledWith("charizard");
+    expect(mockContextValue.setSearchTerm).toHaveBeenCalledWith("retriever");
     expect(mockContextValue.resetToFirstPage).toHaveBeenCalledTimes(1);
   });
 
@@ -72,7 +72,7 @@ describe("SearchBar Component", () => {
     renderWithContext(<SearchBar />);
     
     const searchInput = screen.getByRole("searchbox");
-    expect(searchInput).toHaveAttribute("aria-label", "Buscar Pokémon por nombre");
+    expect(searchInput).toHaveAttribute("aria-label", "Buscar raza de perro por nombre");
   });
 
   test("should apply correct CSS class", () => {
