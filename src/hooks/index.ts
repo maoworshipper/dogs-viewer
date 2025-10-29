@@ -1,6 +1,5 @@
 export { useAppContext } from "./useAppContext";
-export { usePokemonList } from "./usePokemonList";
-export { usePokemonDetails } from "./usePokemonDetails";
-export { useAbilityDetails } from "./useAbilityDetails";
-export { usePokemonSprite } from "./usePokemonSprite";
+export { useDogBreedList } from "./useDogBreedList";
+export { useDogDetails } from "./useDogDetails";
+export { useDogImage } from "./useDogImage";
 export { usePagination } from "./usePagination";
