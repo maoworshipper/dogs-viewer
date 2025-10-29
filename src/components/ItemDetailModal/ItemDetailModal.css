@@ -1,14 +1,14 @@
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(31, 41, 55, 0.7);
+  background-color: rgba(31, 41, 55, 0.8);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
   padding: var(--spacing-4);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   animation: fadeInOverlay 0.3s ease-out;
 }
 
@@ -26,14 +26,15 @@
   padding: var(--spacing-6);
   border-radius: var(--border-radius-lg);
   position: relative;
-  max-width: 650px;
-  width: 100%;
+  max-width: 700px;
+  width: 90%;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-xl);
   animation: fadeInModal 0.3s ease-out 0.1s;
   animation-fill-mode: backwards;
   transform-origin: center;
+  margin: auto;
 }
 
 @keyframes fadeInModal {
@@ -90,7 +91,7 @@
   padding: var(--spacing-2);
 }
 
-.modal-pokemon-image {
+.modal-dog-image {
   object-fit: contain;
 }
 
@@ -201,28 +202,39 @@
 
 /* Responsive modal */
 @media screen and (max-width: 600px) {
-  .modal-content {
-    padding: var(--spacing-5);
-    max-height: 85vh;
+  .modal-overlay {
+    padding: var(--spacing-2);
   }
+  
+  .modal-content {
+    padding: var(--spacing-4);
+    max-height: 85vh;
+    width: 95%;
+  }
+  
   .modal-title {
     font-size: 1.5rem;
     margin-bottom: var(--spacing-4);
   }
+  
   .modal-body {
     grid-template-columns: 1fr;
     gap: var(--spacing-4);
   }
+  
   .modal-image-section {
     margin-bottom: 0;
   }
-  .modal-pokemon-image {
+  
+  .modal-dog-image {
     width: 120px;
     height: 120px;
   }
+  
   .modal-details-section {
     text-align: left;
   }
+  
   .abilities-list {
     justify-content: center;
   }
