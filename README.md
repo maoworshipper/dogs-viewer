@@ -1,16 +1,16 @@
-# PK Viewer
+# Dog Viewer
 
-PK Viewer es una aplicación web para explorar y buscar personajes de Pokémon. Está construida con React, TypeScript y Vite, esta aplicación obtiene datos de [PokéAPI](https://pokeapi.co/) para proporcionar una experiencia interactiva para los fanáticos de Pokémon.
+Dog Viewer es una aplicación web para explorar y buscar razas de perros. Construida con React, TypeScript y Vite, esta aplicación obtiene datos de [Dog CEO API](https://dog.ceo/dog-api/) y [The Dog API](https://api.thedogapi.com/) para proporcionar una experiencia interactiva para los amantes de los perros.
 
 ## Características
 
-- **Explorar Pokémones**: Ver una lista completa de Pokémones con su información básica
-- **Funcionalidad de búsqueda**: Encuentra rápidamente Pokémones específicos por nombre
-- **Paginación**: Navega fácilmente por la gran colección de Pokémones
-- **Vista detallada**: Haz clic en cualquier Pokémon para ver su información detallada, incluyendo:
-  - Tipo
-  - Peso
-  - Habilidades con descripciones detalladas
+- **Explorar razas de perros**: Ver una lista completa de razas de perros con su información básica
+- **Funcionalidad de búsqueda**: Encuentra rápidamente razas específicas por nombre
+- **Paginación**: Navega fácilmente por la gran colección de razas de perros
+- **Vista detallada**: Haz clic en cualquier raza para ver su información detallada, incluyendo:
+  - Imágenes aleatorias de la raza
+  - Sub-razas disponibles
+  - Información adicional cuando esté disponible
 - **Diseño responsivo**: Optimizado para dispositivos de escritorio y móviles
 - **Alto rendimiento**: Construido con React Query para una obtención y almacenamiento en caché de datos eficiente
 
@@ -33,12 +33,14 @@ PK Viewer es una aplicación web para explorar y buscar personajes de Pokémon. 
 ### Instalación
 
 1. Clona el repositorio:
+
    ```bash
-   git clone https://github.com/maoworshipper/pk-viewer.git
-   cd pk-viewer
+   git clone https://github.com/maoworshipper/dog-viewer.git
+   cd dog-viewer
    ```
 
 2. Instala las dependencias:
+
    ```bash
    npm install
    # o
@@ -46,6 +48,7 @@ PK Viewer es una aplicación web para explorar y buscar personajes de Pokémon. 
    ```
 
 3. Inicia el servidor de desarrollo:
+
    ```bash
    npm run dev
    # o
@@ -56,7 +59,7 @@ PK Viewer es una aplicación web para explorar y buscar personajes de Pokémon. 
 
 ## Despliegue a producción
 
-La aplicación se encuentra desplegada en [Vercel](https://pk-viewer.vercel.app/).
+La aplicación se encuentra desplegada en [Vercel](https://dog-viewer.vercel.app/).
 
 ## Ejecutando pruebas
 
@@ -69,14 +72,13 @@ yarn test
 
 ## Estructura del proyecto
 
-```
-pk-viewer/
+```text
+dog-viewer/
 ├── src/
 │   ├── components/          # Componentes de interfaz de usuario
-│   │   ├── AbilityDetail/   # Muestra información de habilidades de Pokémon
-│   │   ├── ItemDetailModal/ # Modal para mostrar información detallada de Pokémon
-│   │   ├── ItemTableRow/    # Fila individual de Pokémon en la tabla principal
-│   │   ├── MainTable/       # Componente de tabla principal para listar Pokémones
+│   │   ├── ItemDetailModal/ # Modal para mostrar información detallada de razas
+│   │   ├── ItemTableRow/    # Fila individual de raza en la tabla principal
+│   │   ├── MainTable/       # Componente de tabla principal para listar razas
 │   │   ├── Pagination/      # Controles de paginación
 │   │   └── SearchBar/       # Funcionalidad de búsqueda
 │   ├── context/             # Contexto de React para estado global
@@ -91,10 +93,9 @@ pk-viewer/
 ## Hooks personalizados
 
 - `useAppContext`: Proporciona acceso al contexto de la aplicación
-- `usePokemonList`: Obtiene la lista de todos los Pokémones
-- `usePokemonDetails`: Obtiene información detallada de un Pokémon específico
-- `useAbilityDetails`: Obtiene información detallada sobre una habilidad de Pokémon
-- `usePokemonSprite`: Obtiene el sprite (imagen) de un Pokémon
+- `useDogBreedList`: Obtiene la lista de todas las razas de perros
+- `useDogDetails`: Obtiene información detallada de una raza específica
+- `useDogImage`: Obtiene imágenes de una raza de perro
 - `usePagination`: Maneja la lógica de paginación
 
 ## Licencia
