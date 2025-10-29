@@ -1,0 +1,66 @@
+.dog-grid-container {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: var(--spacing-4);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.dog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-6);
+  justify-content: center;
+  justify-items: center;
+  width: 100%;
+  max-width: 1400px;
+}
+
+.loading-message,
+.no-results-message {
+  text-align: center;
+  padding: var(--spacing-8) var(--spacing-4);
+  font-size: 1.1rem;
+  color: var(--color-text-secondary);
+  min-height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-background);
+  border-radius: var(--border-radius-lg);
+  margin: var(--spacing-4) 0;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .dog-grid-container {
+    padding: var(--spacing-3);
+  }
+  
+  .dog-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-4);
+    max-width: 100%;
+  }
+}
+
+@media screen and (max-width: 580px) {
+  .dog-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--spacing-3);
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .dog-grid-container {
+    padding: var(--spacing-2);
+  }
+  
+  .dog-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-3);
+    justify-items: center;
+  }
+}

@@ -1,29 +1,29 @@
 import React from "react";
-import { IPokemon } from "../../types/dataTypes";
+import { IDogBreed } from "../../types/dataTypes";
 import ItemTableRow from "../ItemTableRow/ItemTableRow";
 import "./MainTable.css";
 
 interface MainTableProps {
-  pokemonList: IPokemon[];
+  dogBreedList: IDogBreed[];
   isLoading: boolean;
 }
 
-const MainTable: React.FC<MainTableProps> = ({ pokemonList, isLoading }) => {
+const MainTable: React.FC<MainTableProps> = ({ dogBreedList, isLoading }) => {
   if (isLoading) {
-    return <div className="loading-message">Cargando Pokémones...</div>;
+    return <div className="loading-message">Cargando razas de perros...</div>;
   }
 
-  if (!pokemonList.length) {
+  if (!dogBreedList.length) {
     return (
       <div className="no-results-message">
-        No se encontraron Pokémones con ese nombre.
+        No se encontraron razas de perros con ese nombre.
       </div>
     );
   }
 
   return (
     <div className="table-container">
-      <table className="pokemon-table">
+      <table className="dog-table">
         <thead>
           <tr>
             <th>Nombre</th>
@@ -31,8 +31,8 @@ const MainTable: React.FC<MainTableProps> = ({ pokemonList, isLoading }) => {
           </tr>
         </thead>
         <tbody>
-          {pokemonList.map((pokemon) => (
-            <ItemTableRow key={pokemon.name} pokemonInfo={pokemon} />
+          {dogBreedList.map((dogBreed) => (
+            <ItemTableRow key={dogBreed.name} dogBreedInfo={dogBreed} />
           ))}
         </tbody>
       </table>

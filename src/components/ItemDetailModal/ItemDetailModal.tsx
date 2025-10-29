@@ -1,35 +1,23 @@
-import React, { useState, useEffect } from "react";
-import { usePokemonDetails } from "../../hooks/usePokemonDetails";
-import { useAbilityDetails } from "../../hooks/useAbilityDetails";
-import AbilityDetail from "../AbilityDetail/AbilityDetail";
+import React, { useEffect } from "react";
+import { useDogDetails } from "../../hooks/useDogDetails";
 import "./ItemDetailModal.css";
 
 interface ItemDetailModalProps {
-  pokemonUrl: string;
+  dogBreed: string;
   onClose: () => void;
 }
 
 const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
-  pokemonUrl,
+  dogBreed,
   onClose,
 }) => {
   const {
-    data: pokemonDetails,
-    isLoading: isLoadingDetails,
-    isError: isDetailsError,
-    error: detailsError,
-  } = usePokemonDetails(pokemonUrl);
-
-  const [selectedAbilityUrl, setSelectedAbilityUrl] = useState<string | null>(
-    null
-  );
-
-  const {
-    data: abilityDetails,
-    isLoading: isLoadingAbility,
-    isError: isAbilityError,
-    error: abilityError,
-  } = useAbilityDetails(selectedAbilityUrl);
+    images,
+    breedInfo,
+    isLoading,
+    isError,
+    error,
+  } = useDogDetails(dogBreed);
 
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
@@ -37,35 +25,17 @@ const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
         onClose();
       }
     };
-    window.addEventListener("keydown", handleEsc);
-    return () => window.removeEventListener("keydown", handleEsc);
+    globalThis.addEventListener("keydown", handleEsc);
+    return () => globalThis.removeEventListener("keydown", handleEsc);
   }, [onClose]);
-
-  useEffect(() => {
-    setSelectedAbilityUrl(null);
-  }, [pokemonUrl]);
-
-  const handleAbilityClick = (url: string) => {
-    setSelectedAbilityUrl(selectedAbilityUrl === url ? null : url);
-  };
 
   const handleModalContentClick = (e: React.MouseEvent) => {
     e.stopPropagation();
   };
 
   return (
-    <div
-      className="modal-overlay"
-      onClick={onClose}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="pokemon-modal-title"
-    >
-      <div
-        className="modal-content"
-        onClick={handleModalContentClick}
-        role="document"
-      >
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-content" onClick={handleModalContentClick}>
         <button
           className="modal-close-button"
           onClick={onClose}
@@ -74,87 +44,68 @@ const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
           ×
         </button>
 
-        {isLoadingDetails && (
+        {isLoading && (
           <div className="modal-loading">
             <div className="spinner large"></div>
             <p>Cargando detalles...</p>
           </div>
         )}
 
-        {isDetailsError && (
+        {isError && (
           <div className="modal-error">
             <p>Error al cargar detalles:</p>
             <p className="error-message-detail">
-              {detailsError?.message || "Error al cargar detalles"}
+              {error?.message || "Error al cargar detalles"}
             </p>
           </div>
         )}
 
-        {pokemonDetails && !isLoadingDetails && !isDetailsError && (
+        {!isLoading && !isError && (
           <>
-            <h2 id="pokemon-modal-title" className="modal-title">
-              {pokemonDetails.name}
+            <h2 id="dog-modal-title" className="modal-title">
+              {dogBreed.charAt(0).toUpperCase() + dogBreed.slice(1)}
             </h2>
             <div className="modal-body">
               <div className="modal-image-section">
-                {pokemonDetails.sprites.front_default === null ? (
-                  <div className="image-placeholder">?</div>
-                ) : (
+                {images && images.message.length > 0 ? (
                   <img
-                    src={pokemonDetails.sprites.front_default}
-                    alt={`Imagen de ${pokemonDetails.name}`}
-                    className="modal-pokemon-image"
+                    src={images.message[0]}
+                    alt={`Imagen de ${dogBreed}`}
+                    className="modal-dog-image"
                     width="150"
                     height="150"
                   />
+                ) : (
+                  <div className="image-placeholder">?</div>
                 )}
               </div>
               <div className="modal-details-section">
-                <p>
-                  <strong>Tipo(s):</strong>{" "}
-                  {pokemonDetails.types.map((t) => t.type.name).join(", ")}
-                </p>
-                <p>
-                  <strong>Peso:</strong> {pokemonDetails.weight / 10} kg
-                </p>
-                <div className="abilities-section">
-                  <strong>Habilidades:</strong>
-                  <ul className="abilities-list">
-                    {pokemonDetails.abilities.map((a) => (
-                      <li key={a.ability.name}>
-                        <button
-                          className={`ability-button ${
-                            selectedAbilityUrl === a.ability.url ? "active" : ""
-                          }`}
-                          onClick={() => handleAbilityClick(a.ability.url)}
-                          disabled={
-                            isLoadingAbility &&
-                            selectedAbilityUrl === a.ability.url
-                          }
-                        >
-                          {a.ability.name}
-                          {isLoadingAbility &&
-                            selectedAbilityUrl === a.ability.url && (
-                              <span className="button-spinner"></span>
-                            )}
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Display ability details */}
-                <div className="ability-detail-wrapper">
-                  <AbilityDetail
-                    details={abilityDetails ?? null}
-                    isLoading={isLoadingAbility}
-                    error={
-                      isAbilityError
-                        ? abilityError?.message || "Error al cargar habilidad"
-                        : null
-                    }
-                  />
-                </div>
+                {breedInfo && (
+                  <>
+                    <p>
+                      <strong>Peso:</strong> {breedInfo.weight?.metric || "No disponible"}
+                    </p>
+                    <p>
+                      <strong>Altura:</strong> {breedInfo.height?.metric || "No disponible"}
+                    </p>
+                    <p>
+                      <strong>Esperanza de vida:</strong> {breedInfo.life_span || "No disponible"}
+                    </p>
+                    <p>
+                      <strong>Temperamento:</strong> {breedInfo.temperament || "No disponible"}
+                    </p>
+                    {breedInfo.origin && (
+                      <p>
+                        <strong>Origen:</strong> {breedInfo.origin}
+                      </p>
+                    )}
+                    {breedInfo.bred_for && (
+                      <p>
+                        <strong>Criado para:</strong> {breedInfo.bred_for}
+                      </p>
+                    )}
+                  </>
+                )}
               </div>
             </div>
           </>

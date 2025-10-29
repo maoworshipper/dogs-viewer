@@ -1,0 +1,120 @@
+.dog-card {
+  background-color: var(--color-card-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-4);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  height: 280px;
+  font-family: inherit;
+}
+
+.dog-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--color-primary);
+}
+
+.dog-card:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.dog-card-image-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-background);
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  position: relative;
+  min-height: 180px;
+}
+
+.dog-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.dog-card:hover .dog-card-image {
+  transform: scale(1.05);
+}
+
+.dog-card-content {
+  padding: var(--spacing-2) 0;
+}
+
+.dog-card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-1) 0;
+  text-transform: capitalize;
+}
+
+.dog-card-subbreeds {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+  font-style: italic;
+}
+
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-left-color: var(--color-primary);
+  animation: spin 1s linear infinite;
+}
+
+.spinner.large {
+  width: 48px;
+  height: 48px;
+  border-width: 5px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.error-text {
+  font-size: 0.8em;
+  color: var(--color-danger);
+  font-weight: 500;
+}
+
+.image-placeholder {
+  font-size: 3rem;
+  color: var(--color-text-secondary);
+  opacity: 0.5;
+  font-weight: bold;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 480px) {
+  .dog-card {
+    height: 240px;
+  }
+  
+  .dog-card-image-container {
+    min-height: 140px;
+  }
+  
+  .dog-card-title {
+    font-size: 1rem;
+  }
+  
+  .dog-card-subbreeds {
+    font-size: 0.8rem;
+  }
+}

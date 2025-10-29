@@ -1,7 +1,7 @@
-import { fetchAllItems, fetchItemDetails, fetchAbilityDetails } from './api';
-import { IDataResponse, IPokemonDetail, IAbilityDetails } from '../types/dataTypes';
+import { fetchAllItems, fetchDogImages, fetchBreedInfo } from './api';
+import { IDataResponse, IDogImages, IBreedInfo } from '../types/dataTypes';
 
-global.fetch = jest.fn();
+globalThis.fetch = jest.fn();
 
 describe('API service', () => {
   beforeEach(() => {
@@ -9,54 +9,34 @@ describe('API service', () => {
   });
 
   describe('fetchAllItems', () => {
-    it('should fetch pokemon list with default limit', async () => {
+    it('should fetch dog breeds list successfully', async () => {
       // Mock successful response
       const mockResponse: IDataResponse = {
-        count: 1118,
-        next: 'https://pokeapi.co/api/v2/pokemon?offset=1400&limit=1400',
-        previous: null,
-        results: [
-          { name: 'bulbasaur', url: 'https://pokeapi.co/api/v2/pokemon/1/' },
-          { name: 'ivysaur', url: 'https://pokeapi.co/api/v2/pokemon/2/' },
-        ]
+        message: {
+          'labrador': [],
+          'bulldog': ['english', 'french'],
+          'retriever': ['golden']
+        },
+        status: 'success'
       };
 
-      (global.fetch as jest.Mock).mockResolvedValueOnce({
+      (globalThis.fetch as jest.Mock).mockResolvedValueOnce({
         ok: true,
         json: async () => mockResponse
       });
 
       const result = await fetchAllItems();
       
-      expect(global.fetch).toHaveBeenCalledWith('https://pokeapi.co/api/v2/pokemon?limit=1400&offset=0');
-      expect(result).toEqual(mockResponse);
-    });
-
-    it('should fetch pokemon list with custom limit', async () => {
-      // Mock successful response
-      const mockResponse: IDataResponse = {
-        count: 1118,
-        next: 'https://pokeapi.co/api/v2/pokemon?offset=50&limit=50',
-        previous: null,
-        results: [
-          { name: 'bulbasaur', url: 'https://pokeapi.co/api/v2/pokemon/1/' },
-          { name: 'ivysaur', url: 'https://pokeapi.co/api/v2/pokemon/2/' },
-        ]
-      };
-
-      (global.fetch as jest.Mock).mockResolvedValueOnce({
-        ok: true,
-        json: async () => mockResponse
-      });
-
-      const result = await fetchAllItems(50);
-      
-      expect(global.fetch).toHaveBeenCalledWith('https://pokeapi.co/api/v2/pokemon?limit=50&offset=0');
-      expect(result).toEqual(mockResponse);
+      expect(globalThis.fetch).toHaveBeenCalledWith('https://dog.ceo/api/breeds/list/all');
+      expect(result).toEqual([
+        { name: 'labrador', subBreeds: [] },
+        { name: 'bulldog', subBreeds: ['english', 'french'] },
+        { name: 'retriever', subBreeds: ['golden'] }
+      ]);
     });
 
     it('should throw an error when fetch fails', async () => {
-      (global.fetch as jest.Mock).mockResolvedValueOnce({
+      (globalThis.fetch as jest.Mock).mockResolvedValueOnce({
         ok: false,
         status: 404
       });
@@ -66,95 +46,125 @@ describe('API service', () => {
 
     it('should handle network errors', async () => {
       const networkError = new Error('Network error');
-      (global.fetch as jest.Mock).mockRejectedValueOnce(networkError);
+      (globalThis.fetch as jest.Mock).mockRejectedValueOnce(networkError);
 
-      await expect(fetchAllItems()).rejects.toThrow(`Failed to fetch from https://pokeapi.co/api/v2/pokemon?limit=1400&offset=0: Network error`);
+      await expect(fetchAllItems()).rejects.toThrow(`Failed to fetch from https://dog.ceo/api/breeds/list/all: Network error`);
     });
   });
 
-  describe('fetchItemDetails', () => {
-    const pokemonUrl = 'https://pokeapi.co/api/v2/pokemon/1/';
-    
-    it('should fetch pokemon details successfully', async () => {
+  describe('fetchDogImages', () => {
+    it('should fetch dog images for a breed successfully', async () => {
+      const breed = 'labrador';
       // Mock successful response
-      const mockResponse: IPokemonDetail = {
-        id: 1,
-        name: 'bulbasaur',
-        abilities: [
-          {
-            ability: { name: 'overgrow', url: 'https://pokeapi.co/api/v2/ability/65/' },
-            is_hidden: false,
-            slot: 1
-          }
+      const mockResponse: IDogImages = {
+        message: [
+          'https://images.dog.ceo/breeds/labrador/n02099712_1.jpg',
+          'https://images.dog.ceo/breeds/labrador/n02099712_2.jpg'
         ],
-        weight: 69,
-        types: [
-          {
-            slot: 1,
-            type: { name: 'grass', url: 'https://pokeapi.co/api/v2/type/12/' }
-          }
+        status: 'success'
+      };
+
+      (globalThis.fetch as jest.Mock).mockResolvedValueOnce({
+        ok: true,
+        json: async () => mockResponse
+      });
+
+      const result = await fetchDogImages(breed);
+      
+      expect(globalThis.fetch).toHaveBeenCalledWith('https://dog.ceo/api/breed/labrador/images');
+      expect(result).toEqual(mockResponse);
+    });
+
+    it('should fetch dog images for a sub-breed successfully', async () => {
+      const breed = 'bulldog';
+      const subBreed = 'english';
+      // Mock successful response
+      const mockResponse: IDogImages = {
+        message: [
+          'https://images.dog.ceo/breeds/bulldog-english/n02108551_1.jpg'
         ],
-        sprites: {
-          front_default: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png'
+        status: 'success'
+      };
+
+      (globalThis.fetch as jest.Mock).mockResolvedValueOnce({
+        ok: true,
+        json: async () => mockResponse
+      });
+
+      const result = await fetchDogImages(breed, subBreed);
+      
+      expect(globalThis.fetch).toHaveBeenCalledWith('https://dog.ceo/api/breed/bulldog/english/images');
+      expect(result).toEqual(mockResponse);
+    });
+
+    it('should throw an error when fetch fails', async () => {
+      (globalThis.fetch as jest.Mock).mockResolvedValueOnce({
+        ok: false,
+        status: 404
+      });
+
+      await expect(fetchDogImages('unknown')).rejects.toThrow('Error fetching data: 404');
+    });
+  });
+
+  describe('fetchBreedInfo', () => {
+    it('should fetch breed info successfully', async () => {
+      const breedName = 'labrador';
+      // Mock successful response
+      const mockResponse: IBreedInfo[] = [
+        {
+          weight: { imperial: '55-80 lbs', metric: '25-36 kg' },
+          height: { imperial: '21.5-24.5 inches', metric: '55-62 cm' },
+          life_span: '10-12 years',
+          temperament: 'Outgoing, Even Tempered, Gentle, Agile, Kind, Intelligent',
+          origin: 'Canada',
+          bred_for: 'Water retrieval'
         }
-      };
+      ];
 
-      (global.fetch as jest.Mock).mockResolvedValueOnce({
+      (globalThis.fetch as jest.Mock).mockResolvedValueOnce({
         ok: true,
         json: async () => mockResponse
       });
 
-      const result = await fetchItemDetails(pokemonUrl);
+      const result = await fetchBreedInfo(breedName);
       
-      expect(global.fetch).toHaveBeenCalledWith(pokemonUrl);
+      expect(globalThis.fetch).toHaveBeenCalledWith('https://api.thedogapi.com/v1/breeds/search?q=labrador');
       expect(result).toEqual(mockResponse);
     });
 
-    it('should throw an error when fetch fails', async () => {
-      (global.fetch as jest.Mock).mockResolvedValueOnce({
+    it('should return fallback data when fetch fails', async () => {
+      (globalThis.fetch as jest.Mock).mockResolvedValueOnce({
         ok: false,
         status: 404
       });
 
-      await expect(fetchItemDetails(pokemonUrl)).rejects.toThrow('Error fetching data: 404');
-    });
-  });
-
-  describe('fetchAbilityDetails', () => {
-    const abilityUrl = 'https://pokeapi.co/api/v2/ability/65/';
-    
-    it('should fetch ability details successfully', async () => {
-      // Mock successful response
-      const mockResponse: IAbilityDetails = {
-        id: 65,
-        name: 'overgrow',
-        effect_entries: [
-          {
-            effect: 'When this Pokémon has 1/3 or less of its HP remaining, its grass-type moves inflict 1.5× as much regular damage.',
-            language: { name: 'en', url: 'https://pokeapi.co/api/v2/language/9/' },
-            short_effect: 'Strengthens grass moves to inflict 1.5× damage at 1/3 max HP or less.'
-          }
-        ]
-      };
-
-      (global.fetch as jest.Mock).mockResolvedValueOnce({
-        ok: true,
-        json: async () => mockResponse
-      });
-
-      const result = await fetchAbilityDetails(abilityUrl);
+      const result = await fetchBreedInfo('unknown');
       
-      expect(global.fetch).toHaveBeenCalledWith(abilityUrl);
-      expect(result).toEqual(mockResponse);
+      expect(result).toEqual([{
+        weight: { imperial: "20-40 lbs", metric: "9-18 kg" },
+        height: { imperial: "12-16 inches", metric: "30-41 cm" },
+        life_span: "10-14 years",
+        temperament: "Friendly, Loyal, Energetic",
+        origin: "Unknown",
+        bred_for: "Companionship"
+      }]);
     });
 
-    it('should throw an error when fetch fails', async () => {
-      (global.fetch as jest.Mock).mockResolvedValueOnce({
-        ok: false,
-        status: 404
-      });
+    it('should handle network errors with fallback data', async () => {
+      const networkError = new Error('Network error');
+      (globalThis.fetch as jest.Mock).mockRejectedValueOnce(networkError);
 
-      await expect(fetchAbilityDetails(abilityUrl)).rejects.toThrow('Error fetching data: 404');
+      const result = await fetchBreedInfo('labrador');
+      
+      expect(result).toEqual([{
+        weight: { imperial: "20-40 lbs", metric: "9-18 kg" },
+        height: { imperial: "12-16 inches", metric: "30-41 cm" },
+        life_span: "10-14 years",
+        temperament: "Friendly, Loyal, Energetic",
+        origin: "Unknown",
+        bred_for: "Companionship"
+      }]);
     });
   });
 });

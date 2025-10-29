@@ -1,60 +1,47 @@
 export interface AppContextState {
   searchTerm: string;
   currentPage: number;
-  selectedPokemonUrl: string | null;
+  selectedDogBreed: string | null;
 }
 
-export interface IPokemon {
+export interface IDogBreed {
   name: string;
-  url: string;
+  subBreeds: string[];
 }
 
 export interface IDataResponse {
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: IPokemon[];
+  message: Record<string, string[]>;
+  status: string;
 }
 
-export interface IAbility {
-  ability: {
-    name: string;
-    url: string;
-  };
-  is_hidden: boolean;
-  slot: number;
-}
-
-export interface IType {
-  slot: number;
-  type: {
-    name: string;
-    url: string;
+export interface IDogDetail {
+  breed: string;
+  subBreed?: string;
+  images: string[];
+  characteristics: {
+    size: string;
+    temperament: string;
+    origin: string;
+    lifespan: string;
   };
 }
 
-export interface IPokemonDetail {
-  id: number;
-  name: string;
-  abilities: IAbility[];
-  weight: number;
-  types: IType[];
-  sprites: {
-    front_default: string | null;
-  };
+export interface IDogImages {
+  message: string[];
+  status: string;
 }
 
-export interface IAbilityEffectEntry {
-  effect: string;
-  language: {
-    name: string;
-    url: string;
+export interface IBreedInfo {
+  weight: {
+    imperial: string;
+    metric: string;
   };
-  short_effect: string;
-}
-
-export interface IAbilityDetails {
-  id: number;
-  name: string;
-  effect_entries: IAbilityEffectEntry[];
+  height: {
+    imperial: string;
+    metric: string;
+  };
+  life_span: string;
+  temperament: string;
+  origin?: string;
+  bred_for?: string;
 }

@@ -7,7 +7,7 @@ interface SearchBarProps {
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({
-  placeholder = "Buscar Pokémon...",
+  placeholder = "Buscar raza de perro...",
 }) => {
   const { searchTerm, setSearchTerm, resetToFirstPage } = useAppContext();
 
@@ -25,7 +25,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         placeholder={placeholder}
         value={searchTerm}
         onChange={handleChange}
-        aria-label="Buscar Pokémon por nombre"
+        aria-label="Buscar raza de perro por nombre"
       />
     </div>
   );
